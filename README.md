@@ -30,6 +30,7 @@ Um die benannten Risiken der OWASP besser zu verstehen und auch in Zukunft bei d
 Nebst der Top 10 Liste von OWASP gibt es sämtliche weiter Hilfsmittle zur Sicherung von Applikationen darunter Cheat Sheets, welche als konkrete Anleitung bzw. Checkliste zu verwenden ist, um strategisch Sicherheitslücken abzudecken. 
 <br>
 **1.2 Einordnung der Bedrohungen:**
+
 Das Abarbeiten der genannter Cheat sheets ist eine sehr zeitaufwändige Aufgabe, welcher trotz der Wichtigkeit, in gewissen Fällen nicht zu 100% durchgeführt werden kann. 
 In solchen Fällen wo man seine Effizienz erhöhen möchte, ist es wichtig erkennen zu können welche Bedrohungen einem am ehesten betrifft und welche am gravierendsten sind. Diese sollten bevorzugt werden, um eine Grundlegende Sicherheitszustand zu erreichen.
 Eine Analyse der Bedrohungen mit einem Likelihood-Impact Diagramm kann verwendet werden, um einen Prioritätsplan zu erzeugen.
@@ -57,6 +58,7 @@ So kommt der Unberechtigter ohne Username oder Passwort ganz einfach in die Kern
 
 
 **2.2 Gegenmaßnahmen:**
+
 Um diese Sicherheitslücke verschwinden zu lassen gibt es eine ganz einfache Lösung. Nämlich, wenn man statt der direkten Request mit SQL Syntax, eine paramatisierte Abfrage verwendet. <br>
 ```csharp
  string sql = "SELECT * FROM Users WHERE username = {0} AND password = {1}";
@@ -71,7 +73,8 @@ Um diese Sicherheitslücke verschwinden zu lassen gibt es eine ganz einfache Lö
 <br> 
 Somit wird das direkte Einschreiben vom Benutzer in den Request verhindert. 
 
-**2.3 Erfüllungs des Handlungsziels**
+**2.3 Erfüllungs des Handlungsziels:**
+
 Mit meinem Artifakt habe ich ein Beispielprogramm verwendet, welcher Sicherheitslücken hat. Diese habe ich erkannt und anhand meines Wissens dem SQL Injektion zugeordnet. Meine Screenshots zeigen klar, dass ich die Funktion des Codes und die Wirkung der Ausnutzung dessen verstanden habe. Somit kann ich Sicherheitslücken und ihre Ursachen in einer Applikation erkennen. Um mein Wissen noch weiter vorzuzeigen, hätte ich noch weitere Beispiele mit anderen Sicherheitslücken aufzeigen, jedoch wäre dies sehr Zeitaufwändig. 
 Das Vorhande zeigt aber die Grundlegende Erfüllung des Handlungsziels. 
 Zusätzlich habe ich in einem weiteren Artefakt, in Form eines kurzen Codes gezeigt, dass ich fähig bin Massnahmen gegen Sicherheitslücken zu erstellen und diese zu implementieren. Da wären ebenfalls weitere Beispiele noch schön, jedoch ist die Erfüllung des handlungsziels gegeben. 
@@ -79,6 +82,7 @@ Zusätzlich habe ich in einem weiteren Artefakt, in Form eines kurzen Codes geze
 #### Umsetzung Handlungsziel 3
 
 **3.1 Authentifizierungsmechanismen:**
+
 Die Authentifizierung ist für uns digital natives etwas, was wir seit dem ersten Kontakt mit dem Internet kennen. Praktisch jede Webseite, welche mögliche sensible Daten enthält braucht eine Authentifizierung. 
 Die verbreiteste Methode der Authentifizierung ist mit einem Username/einer Mailadresse in Kombination mit einem Passwort. Dies dient zur Überprüfung der Identität des Benutzers durch Wissensnachweis. 
 Im Artefakt des Handlungsziels 2 habe ich diese Methode bereits aufgezeigt. In der Beispielsapplikation wird ein Login mit Username und Passwort verwendet, um abzuchecken, ob der Benutzer über das nötige Wissen verfügt, um Zugang zur Webseite zu bekommen. 
