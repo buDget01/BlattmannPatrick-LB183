@@ -101,7 +101,7 @@ Autorisierung klingt zwar ähnlich wie die Authentifizierung und wird auch oft v
 <br>
 Der Grundkonzept dieses Ablaufs sieht wie folgt aus: Der Benutzer loggt sich in die Webapplikation ein. Diese Benutzerdaten werden anschliessend an den Server gesendet und wird dort in der Session gespeichert. Dieser Session hat eine ID mit dazugebundenen Rechten. Die Session ID wird an den Browser zurückgegeben und bei jedem weiteren Request wird diese Session ID mitgegeben, um die Autorisierung zu durchführen, also quasi zu schauen ob der Benutzer die nötigen Rechte besitzt. 
 <br>
-Es gibt jedoch eine effizientere Methode die Autorisierung durchzuführen. Nämlich mit JWT oder JSON Web Tokens. Der Prozess ist sehr ähnlich mit kleinen Unterschieden. Anstatt, dass die Rechte auf dem Server gespeichert werden, beinhaltet der JWT den User und seine Rechte in Verschlüsselter Form mit einer dazugehörigen Signatur. Im Falle, dass ein Unberechtigter die Rechte auf dem JWT zu verändern versucht, wird die Signatur sich verändern und vom Server als ungültig erkannt werden. 
+Es gibt jedoch eine effizientere Methode die Autorisierung durchzuführen. Nämlich mit JWT oder JSON Web Tokens. Der Prozess ist sehr ähnlich mit kleinen Unterschieden. Anstatt, dass die Rechte auf dem Server gespeichert werden, beinhaltet der JWT den User Eigenschaften darunter seine Rechte (diese Eigenschaften auch genannt "Claims") in Verschlüsselter Form mit einer dazugehörigen Signatur. Im Falle, dass ein Unberechtigter die Rechte auf dem JWT zu verändern versucht, wird die Signatur sich verändern und vom Server als ungültig erkannt werden. 
 <br> 
 Hier ist die Implementierung dieser in der Beispielapplikation vom vorherigen Handlungsziel: <br>
 Login Controller:
@@ -113,7 +113,7 @@ namespace M183.Controllers
     public class LoginController : ControllerBase
     {
         private readonly NewsAppContext _context;
-/// Hier der geheimer Schlüssel
+/// Hier der geheime Schlüssel
         private readonly string _jwtSecret = "Secretkey101";
 
         public LoginController(NewsAppContext context)
@@ -171,6 +171,70 @@ namespace M183.Controllers
 }
 
 ```
+<br>
+Program.cs:
+
+```csharp
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<NewsAppContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SongContext")));
+
+// Add services to the container.
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "SwaggerAnnotation", Version = "v1" });
+    c.IncludeXmlComments(Path.Combine(System.AppContext.BaseDirectory, "SwaggerAnnotation.xml"));
+});
+
+///Hier der geheime Schlüssel
+var key = Encoding.ASCII.GetBytes("Secretkey101"); 
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = true,
+            ValidIssuer = "your-issuer", // Hier Ihren Aussteller einfügen
+            ValidateAudience = true,
+            ValidAudience = "your-audience", // Hier Ihr Publikum einfügen
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
+```
+
+**3.3 Erfüllung des Handlungsziels:**
+Die prägnante Zusammenfassung der Funktion und der Möglichkeiten der Authentifizierung zeigt, dass ich das Thema gut verstehe. Zudem habe ich schon im Handlungsziel 2 erklärt wie der Login Funktioniert und welche Auswirkungen ein guter Login auf die Sicherheit der Applikation hat. 
+Mit dem Vergleich des JWT-Methode mit der traditionellen Methode, zeige ich auf, dass ich die Funktionsweise der Authentisierung gut begriffen habe. Die Implementierung im Beispielprogramm soll auch zeigen, dass ich den theoretischen Prozess auch in einem Programm umsetzen kann. 
+Als Verbesserung hätte ich mehr Kommentare im Code hinterlassen sollen, um zu zeigen dass ich genau verstehe was gemacht wird. 
 
 
 #### Umsetzung Handlungsziel 4
