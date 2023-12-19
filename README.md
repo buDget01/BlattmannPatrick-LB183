@@ -48,14 +48,17 @@ Hier sieht man wo ein String als Request verwendet wird:
 
 Das Missbrauchen dieser Lücke passiert auf der Webseite im Login Eingabefeld:
 ![Website](https://github.com/buDget01/BlattmannPatrick-LB183/assets/89085636/3dd013b5-79e1-430e-a297-4cd3149c8938)
+Intern sieht dies in der Applikation dann so aus:
+![Code1](https://github.com/buDget01/BlattmannPatrick-LB183/assets/89085636/f8c8f737-3bb9-4dd4-a538-f0f49a4c8729)
 
-Mit einer einfachen Eingabe von ```csharp ' OR '1'='1' -- ``` wird das Passwortfeld zu einem SQL-Kommentar gemacht ("--" = SQL Kommentar Syntax) und die Abfrage immer wahr gemacht ('1'='1' ist immer wahr)
+
+Mit einer einfachen Eingabe von ``` ' OR '1'='1' -- ``` wird das Passwortfeld zu einem SQL-Kommentar gemacht ("--" = SQL Kommentar Syntax) und die Abfrage immer wahr gemacht ('1'='1' ist immer wahr)
 So kommt der Unberechtigter ohne Username oder Passwort ganz einfach in die Kernapplikation rein, wo sämtliche Schaden angerichtet oder sensible Daten veröffentlicht werden können. 
 
 
 
 **2.2 Gegenmaßnahmen:**
-- Implementierung von Gegenmaßnahmen anhand konkreter Szenarien.
+Um diese Sicherheitslücke verschwinden zu lassen gibt es eine ganz einfache Lösung
 
 #### Umsetzung Handlungsziel 3
 
