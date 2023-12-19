@@ -85,12 +85,93 @@ Zusätzlich habe ich in einem weiteren Artefakt, in Form eines kurzen Codes geze
 
 Die Authentifizierung ist für uns digital natives etwas, was wir seit dem ersten Kontakt mit dem Internet kennen. Praktisch jede Webseite, welche mögliche sensible Daten enthält braucht eine Authentifizierung. 
 Die verbreiteste Methode der Authentifizierung ist mit einem Username/einer Mailadresse in Kombination mit einem Passwort. Dies dient zur Überprüfung der Identität des Benutzers durch Wissensnachweis. 
+<br>
 Im Artefakt des Handlungsziels 2 habe ich diese Methode bereits aufgezeigt. In der Beispielsapplikation wird ein Login mit Username und Passwort verwendet, um abzuchecken, ob der Benutzer über das nötige Wissen verfügt, um Zugang zur Webseite zu bekommen. 
 Der Login aus dem Beispiel kann sehr gut in anderen Projekt eingesetzt werden und ist recht Standard. 
+<br>
+Diese Art und Weise der Authentifizierung ist in den meisten Fällen ausreichend, jedoch wäre eine 2-Faktor Authentifizierung, welcher auf eine andere Art von Identitätsnachweis beruht, ideal. Da gibt es sämtliche Optionen: 
+- Besitz des Stammgeräts: SMS-Code, Authenticator Apps etc.
+- Zugang zu einer bereits bekannter Mailadresse
+- Biologische Nachweise: Fingerabdruck, Gesichtserkennung,
+- Schlüssel in Form von Physische Secure Key Geräte
 
 
 **3.2 Effektive Autorisierung:**
-- Umsetzung von Mechanismen für eine effektive Autorisierung im Anwendungscode.
+Autorisierung klingt zwar ähnlich wie die Authentifizierung und wird auch oft vertauscht. Es gibt jedoch einen klaren Unterschied zwischen den Beiden. Bei der Authentifizierung handelt es sich um die Wer-Frage, im Gegensatz zur Autorisierung wo die Was-Frage behandelt. Genauer gesagt wird mit der Autorisierung geregelt was der eingeloggter Benutzer in der Web-Applikation machen darf. 
+<br>
+Der Grundkonzept dieses Ablaufs sieht wie folgt aus: Der Benutzer loggt sich in die Webapplikation ein. Diese Benutzerdaten werden anschliessend an den Server gesendet und wird dort in der Session gespeichert. Dieser Session hat eine ID mit dazugebundenen Rechten. Die Session ID wird an den Browser zurückgegeben und bei jedem weiteren Request wird diese Session ID mitgegeben, um die Autorisierung zu durchführen, also quasi zu schauen ob der Benutzer die nötigen Rechte besitzt. 
+<br>
+Es gibt jedoch eine effizientere Methode die Autorisierung durchzuführen. Nämlich mit JWT oder JSON Web Tokens. Der Prozess ist sehr ähnlich mit kleinen Unterschieden. Anstatt, dass die Rechte auf dem Server gespeichert werden, beinhaltet der JWT den User und seine Rechte in Verschlüsselter Form mit einer dazugehörigen Signatur. Im Falle, dass ein Unberechtigter die Rechte auf dem JWT zu verändern versucht, wird die Signatur sich verändern und vom Server als ungültig erkannt werden. 
+<br> 
+Hier ist die Implementierung dieser in der Beispielapplikation vom vorherigen Handlungsziel: <br>
+Login Controller:
+```csharp
+namespace M183.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class LoginController : ControllerBase
+    {
+        private readonly NewsAppContext _context;
+/// Hier der geheimer Schlüssel
+        private readonly string _jwtSecret = "Secretkey101";
+
+        public LoginController(NewsAppContext context)
+        {
+            _context = context;
+        }
+
+        /// <summary>
+        /// Login a user using password and username
+        /// </summary>
+        /// <response code="200">Login successfull</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="401">Login failed</response>
+
+        /// Patrick Tri My Blattmann
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public ActionResult<User> Login(LoginDto request)
+        {
+            ///login Code von Handlungsziel 2
+
+///Neu ab hier --------------------------------
+            var token = GenerateJwtToken(user);
+
+            return Ok(user);
+        }
+
+        private string GenerateJwtToken(User user)
+        {
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), 
+                new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()), 
+                // Weitere Claims hinzufügen, je nach Bedarf
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSecret));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var token = new JwtSecurityToken(
+                issuer: "your-issuer", 
+                audience: "your-audience", 
+                claims: claims,
+                expires: DateTime.Now.AddDays(1), 
+                signingCredentials: credentials
+            );
+
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return tokenString;
+        }
+    }
+}
+
+```
+
 
 #### Umsetzung Handlungsziel 4
 
