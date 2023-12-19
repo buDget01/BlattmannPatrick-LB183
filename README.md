@@ -57,7 +57,7 @@ So kommt der Unberechtigter ohne Username oder Passwort ganz einfach in die Kern
 
 
 **2.2 Gegenmaßnahmen:**
-Um diese Sicherheitslücke verschwinden zu lassen gibt es eine ganz einfache Lösung. Nämlich, wenn man statt der direkten Request mit SQL Syntax, eine paramatisierte Abfrage verwendet. 
+Um diese Sicherheitslücke verschwinden zu lassen gibt es eine ganz einfache Lösung. Nämlich, wenn man statt der direkten Request mit SQL Syntax, eine paramatisierte Abfrage verwendet. <br>
 ``` string sql = "SELECT * FROM Users WHERE username = {0} AND password = {1}"; <br> User? user = _context.Users.FromSqlRaw(sql, request.Username, MD5Helper.ComputeMD5Hash(request.Password)).FirstOrDefault();```
 
 
