@@ -42,7 +42,10 @@ Das Erkenntnis, dass Bedrohungen nicht in allen Fällen gleich sind und dass man
 #### Umsetzung Handlungsziel 2
 
 **2.1 Lückenidentifikation:**
-- Praktische Beispiele zur Erkennung von Sicherheitslücken.
+Hier haben wir einen klassischen Fall der SQL Injection. In diesem LoginController welches für den Login in eine Web.Applikation verwendet wird, wird ein String für den Request and eine SQL Datenbank verwendet. Bestandteile dieses Strings werden direkt vom Benutzer über die Webseite eingegeben. Da keine Sicherheitsbarrieren vorhanden sind, kann der Benutzer oder in diesem Fall der Hacker SQL Syntax verwenden, um den Login zu knacken. 
+Hier sieht man wo ein String als Request verwendet wird: 
+![LoginController](https://github.com/buDget01/BlattmannPatrick-LB183/assets/89085636/b0e0ffa4-6681-43d9-bc56-f6376be2e842)
+
 
 **2.2 Gegenmaßnahmen:**
 - Implementierung von Gegenmaßnahmen anhand konkreter Szenarien.
