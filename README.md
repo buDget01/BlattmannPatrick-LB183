@@ -4,7 +4,7 @@
 
 #### Umsetzung Handlungsziel 1
 
-**1.1 Erkennung von Bedrohungen:**
+**1.1 Häufige Bedrohungen:**
 
 Es existieren fast endlose Taktiken welche Hacker verwenden können, um Sicherheitslücken in Applikationen auszunutzen. 
 <br>
@@ -27,6 +27,17 @@ Um die benannten Risiken der OWASP besser zu verstehen und auch in Zukunft bei d
 | A09 -Security Logging and Monitoring Failures | Erreignisse werden nicht gelogged bzw. überwacht | - Umfassend Loggen und Bewachen. <br> - Logs auf Anomalien überprüfen. <br> - Security Information and Event Management (SIEM)-Lösungen verwenden.                                                                                                                                                                                                                              |
 | A10 -Server-Side Request Forgery      | HTTP wird verwendet um ungesicherte Daten anzufordern | - Filtern und Validierungen für benutzerseitige Anfragen verwenden. <br> - Web Application Firewalls (WAF) einsetzen. <br> - Keine rohe Daten an Benutzern senden                                                |
 
+Nebst der Top 10 Liste von OWASP gibt es sämtliche weiter Hilfsmittle zur Sicherung von Applikationen darunter Cheat Sheets, welche als konkrete Anleitung bzw. Checkliste zu verwenden ist, um strategisch Sicherheitslücken abzudecken. 
+<br>
+**1.2 Einordnung der Bedrohungen:**
+Das Abarbeiten der genannter Cheat sheets ist eine sehr zeitaufwändige Aufgabe, welcher trotz der Wichtigkeit, in gewissen Fällen nicht zu 100% durchgeführt werden kann. 
+In solchen Fällen wo man seine Effizienz erhöhen möchte, ist es wichtig erkennen zu können welche Bedrohungen einem am ehesten betrifft und welche am gravierendsten sind. Diese sollten bevorzugt werden, um eine Grundlegende Sicherheitszustand zu erreichen.
+Eine Analyse der Bedrohungen mit einem Likelihood-Impact Diagramm kann verwendet werden, um einen Prioritätsplan zu erzeugen.
+
+**1.3 Erfüllung des Handlungsziels:**
+Mein Artefakt zeigt anhand meiner selbstgeschriebenen Beschreibungen der Bedrohungen, dass ich über ein gutes Verständnis der Auswirkungen der, von OWASP ernannten häufigsten Cyber-Angriffen, verfüge und dass ich mögliche Massnahmen kenne. 
+Um dies jedoch noch weiter zu zeigen, wären konkrete Beispiele von Vorteil gewesen. Jedoch, weil eine detailiertere Behandlung der meisten Bedrohungen in den nächsten Handlungszielen mit konkreten Beispielen belegt werden, wäre dies ein wenig überflüssig im HZ1. 
+Das Erkenntnis, dass Bedrohungen nicht in allen Fällen gleich sind und dass man Bedrohungen einordnen sollte, ist ein wichtiger Bestandteil des Handlungsziels, welcher ich erläutert habe.  
 
 #### Umsetzung Handlungsziel 2
 
