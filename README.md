@@ -59,18 +59,14 @@ So kommt der Unberechtigter ohne Username oder Passwort ganz einfach in die Kern
 **2.2 Gegenmaßnahmen:**
 Um diese Sicherheitslücke verschwinden zu lassen gibt es eine ganz einfache Lösung. Nämlich, wenn man statt der direkten Request mit SQL Syntax, eine paramatisierte Abfrage verwendet. <br>
 ```csharp
-string sql = "SELECT * FROM Users WHERE username = @Username AND password = @Password";
+ string sql = "SELECT * FROM Users WHERE username = {0} AND password = {1}";
 
-    User? user = _context.Users.FromSqlRaw(sql,
-        new SqlParameter("@Username", request.Username),
-        new SqlParameter("@Password", request.Password)).FirstOrDefault();
-
-    if (user == null)
-    {
-        return Unauthorized("Login failed");
-    }
-
-    return Ok(user);
+ User? user = _context.Users.FromSqlRaw(sql, request.Username, request.Password).FirstOrDefault();
+ if (user == null)
+ {
+     return Unauthorized("Login failed");
+ }
+ return Ok(user);
 ```
 <br> 
 Somit wird das direkte Einschreiben vom Benutzer in den Request verhindert. 
