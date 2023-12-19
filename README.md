@@ -79,7 +79,11 @@ Zusätzlich habe ich in einem weiteren Artefakt, in Form eines kurzen Codes geze
 #### Umsetzung Handlungsziel 3
 
 **3.1 Authentifizierungsmechanismen:**
-- Praktische Implementierung sicherer Authentifizierungsmethoden.
+Die Authentifizierung ist für uns digital natives etwas, was wir seit dem ersten Kontakt mit dem Internet kennen. Praktisch jede Webseite, welche mögliche sensible Daten enthält braucht eine Authentifizierung. 
+Die verbreiteste Methode der Authentifizierung ist mit einem Username/einer Mailadresse in Kombination mit einem Passwort. Dies dient zur Überprüfung der Identität des Benutzers durch Wissensnachweis. 
+Im Artefakt des Handlungsziels 2 habe ich diese Methode bereits aufgezeigt. In der Beispielsapplikation wird ein Login mit Username und Passwort verwendet, um abzuchecken, ob der Benutzer über das nötige Wissen verfügt, um Zugang zur Webseite zu bekommen. 
+Der Login aus dem Beispiel kann sehr gut in anderen Projekt eingesetzt werden und ist recht Standard. 
+
 
 **3.2 Effektive Autorisierung:**
 - Umsetzung von Mechanismen für eine effektive Autorisierung im Anwendungscode.
