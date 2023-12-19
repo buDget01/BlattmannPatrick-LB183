@@ -8,7 +8,7 @@
 
 Es existieren fast endlose Taktiken welche Hacker verwenden können, um Sicherheitslücken in Applikationen auszunutzen. 
 <br>
-Unser job als Entwickler besteht darin diese Lücken abzudenken, um die Angriffe der Hackern vorzubeugen. 
+Unser job als Entwickler besteht darin diese Lücken abzudecken, um die Angriffe der Hackern vorzubeugen. 
 Da es eben so viele Angriffsarten gibt und es nahezu unmöglich ist alle zu vermeiden, ist es wichtig zu kennen welche am häufigsten verwendet werden.
 <br>
 Mithilfe der Top 10 Liste der OWASP kann man sicherstellen, dass die häufigsten und auch gefährlichsten Cyber-Attacken vermieden werden können. 
