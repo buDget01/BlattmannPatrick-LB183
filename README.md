@@ -76,7 +76,9 @@ string sql = "SELECT * FROM Users WHERE username = @Username AND password = @Pas
 Somit wird das direkte Einschreiben vom Benutzer in den Request verhindert. 
 
 **2.3 Erfüllungs des Handlungsziels**
-
+Mit meinem Artifakt habe ich ein Beispielprogramm verwendet, welcher Sicherheitslücken hat. Diese habe ich erkannt und anhand meines Wissens dem SQL Injektion zugeordnet. Meine Screenshots zeigen klar, dass ich die Funktion des Codes und die Wirkung der Ausnutzung dessen verstanden habe. Somit kann ich Sicherheitslücken und ihre Ursachen in einer Applikation erkennen. Um mein Wissen noch weiter vorzuzeigen, hätte ich noch weitere Beispiele mit anderen Sicherheitslücken aufzeigen, jedoch wäre dies sehr Zeitaufwändig. 
+Das Vorhande zeigt aber die Grundlegende Erfüllung des Handlungsziels. 
+Zusätzlich habe ich in einem weiteren Artefakt, in Form eines kurzen Codes gezeigt, dass ich fähig bin Massnahmen gegen Sicherheitslücken zu erstellen und diese zu implementieren. Da wären ebenfalls weitere Beispiele noch schön, jedoch ist die Erfüllung des handlungsziels gegeben. 
 
 #### Umsetzung Handlungsziel 3
 
