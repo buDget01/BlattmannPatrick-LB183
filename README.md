@@ -302,6 +302,7 @@ public ActionResult EnterOTP(int userId, string enteredOTP)
 ```
 <br>
 In diesem Code inbehalten sind die grundlegenden Bausteine einer Zwei-Faktoren-Authentifizierung mittels SMS. Dazu müsste das Frontend bearbeitet, sowie einen SMS-Service auf die Beine gestellt werden.
+<br>
 
 **4.3 Erfüllung des Handlungsziels**
 Nach all dem Code fand ich es noch wichtig die grosse Menge an Information zu den Sicherheitsaspekten in einer anderen Darstellung als reiner Text oder einer Tabelle einzuprägen. Die Grafik eignet sich gut, um die Aspekten zuzuordnen und die Sicherheitsbewusste Entwicklung zu strukturieren. 
@@ -311,7 +312,50 @@ Besser wäre wenn ich dies vollständig umsetzen könnte inklusive Frontend und 
 #### Umsetzung Handlungsziel 5
 
 **5.1 Generierung von Audit-Informationen:**
-- Methoden zur Erzeugung von relevanten Informationen für Auditing und Logging.
+Zu den Sicherheitsaspekten gehören auch Logging und Monitoring. Diese werde ich im Beispiel anhand einer Klasse praktisch umsetzen: 
 
-**5.2 Auswertungen und Alarme:**
-- Definition und Implementierung von Auswertungen sowie Alarmen bei sicherheitsrelevanten Ereignissen.
+Im Program.cs zuzufügen:
+```csharp
+///Using... statements
+///Builder von vorhin
+
+builder.Host.ConfigureLogging(logging =>
+{
+///Die Vorgänge sind dem Namen entsprechend
+    logging.ClearProviders(); 
+    logging.AddConsole();
+    logging.AddDebug();
+});
+
+```
+
+In den Controllers einzufügen:
+
+```csharp
+ public class LoginController : ControllerBase
+ {
+
+ private readonly ILogger<MyController> _logger;
+
+    public MyController(ILogger<MyController> logger)
+    {
+        _logger = logger;
+    }
+
+
+///weiterer Code wie ActionResult<User> Login(LoginDto request)...
+
+///dependency injection im [HttpPost]
+_logger.LogInformation("POST request successfull."); ///Die Logging-Nachricht von Fall zu Fall zu verändern
+_logger.LogError("An error occurred: {ErrorMessage}", ex.Message); ///Bei Error sollte auch ein Error geloggt werden nicht nur eine Information
+
+
+```
+
+Mit den Zusatz dieser Code-Abschnitte besteht die Option wo nötig eine Nachricht/ein Error zu loggen. Mit Monitoring kann man dann seine Applikation auf allfälligen Angriffen überwachen. Um dies effizient zu machen sollte das Logging nach ausgebaut werden, sodass ereignisse spezifischer geloggt werden. So kann man besser auffassen wo, was geschieht und wie man entgegenwirken kann. 
+
+
+**5.2 Erfüllung des Handlungsziels**
+Dieser Artefakt liess mich die Funktion von Logging genauer anschauen. Es ist wichtig nicht nur zu erkennen, wofür Logging wichtig ist, sondern auch wo genau Logging implementiert werden soll. In welchen Controllern und wie genau die Loggingnachrichten sein sollten. 
+Mein Logger ist relativ simple aufgebaut und kann auch ohne Porblem in weiteren Applikationen verwendet werden. Um einen ausführlichen Loggingsystem zu erstellen muss man den am jeweiligen Programm besser anpassen. Ich habe in diesem Artefakt nicht jeweils in allen Controllern den Logger angepasst, sondern einen Generellen aufbau festgelegt, welcher in den Controllern eingesetzt werden kann. Mit der Herstellung dieses Artefakts habe ich jedoch das Handlungsziel grösstenteils erreicht. 
+
