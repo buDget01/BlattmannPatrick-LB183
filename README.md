@@ -240,10 +240,73 @@ Als Verbesserung hätte ich mehr Kommentare im Code hinterlassen sollen, um zu z
 #### Umsetzung Handlungsziel 4
 
 **4.1 Berücksichtigung von Sicherheitsaspekten:**
-- Leitfaden zur Integration von Sicherheitsüberlegungen in den Entwurfsprozess.
+Die zahlreichen Sicherheitsaspekten die zu beachten sind, können zum Teil überfordernd sein. Aus diesem Grunde habe ich aus den wichtigsten Punkten eine Grafik erstellt. Diese Punkte sind alle Teil der defensiven Programmierung, welche für das sichere Entwerfen, Implementieren und Inbetriebnehmen einer Webapplikation sorgt. 
+<br>
+![Mindmap](https://github.com/buDget01/BlattmannPatrick-LB183/assets/89085636/539ff999-7b14-4a4e-bcd9-06a0f1f3a275)
+
 
 **4.2 Inbetriebnahme:**
-- Checkliste für die Sicherheitsüberprüfung während der Inbetriebnahme.
+Als Beispiel für eine praktische Umsetzung eines dieser Aspekten habe ich versucht 2-Faktor-Authentifizierung zu implementieren. Die 2-Faktor-Authentifizierung wäre eine sehr starke Barriere gegen den sogenannten "Human Factor", denn auch wenn der Username und das Passwort durch einem Leak auf ende des Users in den falschen Händen gelangen würde, hätten die Unbefugten grosse Schwierigkeiten weiterzukommen. 
+Ich habe mich auf die SMS-Variante der 2-Faktor-Authentifizierung entschieden:
+
+```csharp
+
+ public ActionResult<User> Login(LoginDto request)
+ {
+     if (request == null || request.Username.IsNullOrEmpty() || request.Password.IsNullOrEmpty())
+     {
+         return BadRequest();
+     }
+
+     string sql = "SELECT * FROM Users WHERE username = {0} AND password = {1}";
+
+     User? user = _context.Users.FromSqlRaw(sql, request.Username, request.Password).FirstOrDefault();
+     if (user == null)
+     {
+         return Unauthorized("Login failed");
+     }
+
+///Ab hier wird die 2-Faktor-Authentifizierung umgesetzt
+///Ein One Time Password wird generiert und an eine beim sign in gespeicherte Telefonnummer geschickt
+      string otp = GenerateOTP();
+SaveOTPForUser(user.Id, otp);
+
+SMSService.SendSMS(user.PhoneNumber, $"Ihr Einmalkode für die 2-Faktor-Authentifizierung: {otp}");
+
+     var token = GenerateJwtToken(user);
+///Der User wird weitergeleitet zum Eingabefeld für den OTP
+return RedirectToAction("EnterOTP", new { userId = user.Id });
+
+     return Ok(user);
+ }
+
+///Hier ist die Methode welcher für die Authentifizierung der OTP zuständig ist
+public ActionResult EnterOTP(int userId, string enteredOTP)
+{
+    // Überprüfen Sie den eingegebenen Einmalkode mit dem gespeicherten Wert
+    var savedOTP = GetSavedOTPForUser(userId);
+
+    if (enteredOTP != savedOTP)
+    {
+        return Unauthorized("Falscher Einmalkode");
+    }
+
+    // Wenn der Einmalkode korrekt ist, generieren Sie das JWT-Token und führen Sie die üblichen Schritte fort
+    var user = GetUserById(userId);
+    var token = GenerateJwtToken(user);
+
+    // Rückgabe des Benutzers oder einer anderen Bestätigung
+    return Ok(user);
+}
+
+```
+<br>
+In diesem Code inbehalten sind die grundlegenden Bausteine einer Zwei-Faktoren-Authentifizierung mittels SMS. Dazu müsste das Frontend bearbeitet, sowie einen SMS-Service auf die Beine gestellt werden.
+
+**4.3 Erfüllung des Handlungsziels**
+Nach all dem Code fand ich es noch wichtig die grosse Menge an Information zu den Sicherheitsaspekten in einer anderen Darstellung als reiner Text oder einer Tabelle einzuprägen. Die Grafik eignet sich gut, um die Aspekten zuzuordnen und die Sicherheitsbewusste Entwicklung zu strukturieren. 
+Nichtsdestotrotz wollte ich noch eines der Aspekten mit Code belegen. Die Auswahl der 2-Faktor-Authentifizierung war gewollt, denn dies wird langsam zu Best-Practice um Zugriffsattacken aufzuhalten. 
+Besser wäre wenn ich dies vollständig umsetzen könnte inklusive Frontend und SMS-Service, jedoch wäre diese Umsetzung von sehr grosser Aufwand gewesen. Den Ausbau der Beispielapplikation genügt zur Verständnis der Logik und des Zusammenhangs. 
 
 #### Umsetzung Handlungsziel 5
 
